@@ -8,20 +8,23 @@
       <input type="text" name="name" placeholder="aspirin; AsPiRin;" [(ngModel)]="names">
       <p>Classifications :</p>
       <label *ngFor="let classname of classifications;">
-        <input id="checkbox" (click)="buttonSelect($event)" type="checkbox">
+        <input id="checkbox" name="classes" (click)="buttonSelect($event, classname)" type="checkbox">
         {{classname}}
       </label>
       <p>Databases :</p>
       <label *ngFor="let dbname of databases;">
-        <input id="checkbox" (click)="buttonSelect($event)" type="checkbox">
+        <input id="checkbox" name="db" (click)="buttonSelect($event, dbname)" type="checkbox">
         {{dbname}}
       </label>
+      <!--
       <p>Filters :</p>
       <textarea form="query-form-id" class="text-area-size" readonly>{{selectedProps}}</textarea>
       <select>
-        <!--*ngFor list options-->
+        //*ngFor list options
         <option *ngFor="let item of filters; index as i"></option>
-      </select>
+      </select> 
+      -->
+      <input type="button" (click)="formSubmit()" name="submit" value="query">
     </form>
   </div>
 </div>

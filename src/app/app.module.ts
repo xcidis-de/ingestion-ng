@@ -9,6 +9,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 import { AppQueryFormComponent } from './app-query-form/app-query-form.component';
 import { AppInfoDisplayComponent } from './app-info-display/app-info-display.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [IngestionExternalHttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
