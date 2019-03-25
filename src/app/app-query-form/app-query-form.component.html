@@ -1,0 +1,27 @@
+<div class="background-form">
+  <div class="main-form">
+    <h3>Query!</h3>
+    <form class="form-text" id="query-form-id">
+      <p>Unique IDs :</p>
+      <input type="text" name="id" placeholder="1; ZINC00012345;" [(ngModel)]="ids">
+      <p>Names :</p>
+      <input type="text" name="name" placeholder="aspirin; AsPiRin;" [(ngModel)]="names">
+      <p>Classifications :</p>
+      <label *ngFor="let classname of classifications;">
+        <input id="checkbox" (click)="buttonSelect($event)" type="checkbox">
+        {{classname}}
+      </label>
+      <p>Databases :</p>
+      <label *ngFor="let dbname of databases;">
+        <input id="checkbox" (click)="buttonSelect($event)" type="checkbox">
+        {{dbname}}
+      </label>
+      <p>Filters :</p>
+      <textarea form="query-form-id" class="text-area-size" readonly>{{selectedProps}}</textarea>
+      <select>
+        <!--*ngFor list options-->
+        <option *ngFor="let item of filters; index as i"></option>
+      </select>
+    </form>
+  </div>
+</div>
