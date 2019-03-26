@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Polus Datastore';
+
+  constructor(){
+
+  }
+
 }

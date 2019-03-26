@@ -1,6 +1,6 @@
 <div class="background-form">
   <div class="main-form">
-    <h3>Query!</h3>
+    <h3>Query Form!</h3>
     <form class="form-text" id="query-form-id">
       <p>Unique IDs :</p>
       <input type="text" name="id" placeholder="1; ZINC00012345;" [(ngModel)]="ids">
@@ -24,7 +24,9 @@
         <option *ngFor="let item of filters; index as i"></option>
       </select> 
       -->
-      <input type="button" (click)="formSubmit()" name="submit" value="query">
+      <br>
+      <br>
+      <input type="button" id="query" name="submit" value="query" (click)="formEmitter()">
     </form>
   </div>
 </div>

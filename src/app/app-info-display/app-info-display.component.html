@@ -1,3 +1,3 @@
-<p>
-  app-info-display works!
+<p *ngIf="observe.data">
+  {{(observe.data | async) | json}}
 </p>

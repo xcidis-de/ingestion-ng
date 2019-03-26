@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ɵConsole } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
 import { Observable } from 'rxjs';
 
@@ -15,21 +15,17 @@ type HTMLElementEvent<T extends Name> = Event & {
 })
 
 export class AppQueryFormComponent implements OnInit {
-  private http: IngestionExternalHttpService;
   filters: string[] = [];
   ids: string = '';
   names: string = '';
   classifications: string[] = ['Protein', 'Gene', 'Chemistry'];
   databases: string[] = ['PubChem', 'ZINC', 'UniProt', 'CrapOME', 'NCBI', 'COSMIC', 'PantherDB'];
-  selected_databases: Object = {
+  selected_databases: Object = {};
+  selected_classes: Object = {};
 
-  }
-  selected_classes: Object = {
 
+  constructor(private http: IngestionExternalHttpService) {
   }
-  constructor(http: IngestionExternalHttpService) {
-    this.http = http;
-   }
 
   ngOnInit() {  
   }
@@ -53,14 +49,16 @@ export class AppQueryFormComponent implements OnInit {
 
   }
 
-  formSubmit(){
-    const ids: string[] = this.ids.replace(' ', '').split(';');
-    const names: string[] = this.names.replace(' ', '').split('; ');
-    const observeReq: Observable<any> = this.http.configure(ids, names, Object.keys(this.selected_classes), Object.keys(this.selected_databases));
-    observeReq.subscribe({
-      next: item => console.log(item),
-      error: err => console.error(err),
-      complete: ()=> console.log('done')
-    })
+  formEmitter(){
+    const ids: string[] = this.ids.replace(/;|,|\s/g, ';').split(';');
+    const names: string[] = this.names.replace(/;|,|\s/g, ';').split(';');
+    const submit = {
+      names,
+      ids,
+      headers: Object.keys(this.selected_classes),
+      providers: Object.keys(this.selected_databases)
+    }
+    this.http.configure(submit)
+
   }
 }
