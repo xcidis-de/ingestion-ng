@@ -37,11 +37,15 @@ select {
     border-radius: 5px 5px 5px 5px;
 }
 
+#advanced{
+    cursor: pointer;
+}
+
 #checkbox {
     width: 25px;
     text-align: middle;
     vertical-align: middle;
-    margin-left: 2px;
+    margin-left: 10px;
 }
 
 #query {

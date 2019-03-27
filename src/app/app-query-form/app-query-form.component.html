@@ -16,17 +16,22 @@
         <input id="checkbox" name="db" (click)="buttonSelect($event, dbname)" type="checkbox">
         {{dbname}}
       </label>
-      <!--
-      <p>Filters :</p>
-      <textarea form="query-form-id" class="text-area-size" readonly>{{selectedProps}}</textarea>
-      <select>
-        //*ngFor list options
-        <option *ngFor="let item of filters; index as i"></option>
-      </select> 
-      -->
       <br>
       <br>
-      <input type="button" id="query" name="submit" value="query" (click)="formEmitter()">
+      <p id="advanced" (click)="showAdv()">Advanced  &#9660;</p>
+      <div *ngIf="adv">
+        <label for="advPseudonyms">
+          <input id="checkbox" name="advPseudonyms" type="checkbox">
+          !Search Recursively
+        </label>
+        <label for="advPseudonyms">
+          <input id="checkbox" name="advExact" type="checkbox">
+          !!Exact Match
+        </label>
+      </div>
+      <a routerLink="/information" routerLinkActive="active">
+        <input type="button" id="query" name="submit" value="query" (click)="formEmitter()">
+      </a>
     </form>
   </div>
 </div>

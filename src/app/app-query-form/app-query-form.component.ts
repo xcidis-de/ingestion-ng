@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
-import { Observable } from 'rxjs';
+
 
 interface Name extends Element {
   name: string
@@ -18,6 +18,7 @@ export class AppQueryFormComponent implements OnInit {
   filters: string[] = [];
   ids: string = '';
   names: string = '';
+  adv: boolean = false;
   classifications: string[] = ['Protein', 'Gene', 'Chemistry'];
   databases: string[] = ['PubChem', 'ZINC', 'UniProt', 'CrapOME', 'NCBI', 'COSMIC', 'PantherDB'];
   selected_databases: Object = {};
@@ -27,6 +28,9 @@ export class AppQueryFormComponent implements OnInit {
   constructor(private http: IngestionExternalHttpService) {
   }
 
+  showAdv(){
+    this.adv = this.adv === true ? false : true;
+  }
   ngOnInit() {  
   }
 

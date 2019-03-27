@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
-import { throwError, Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { retry, catchError, merge } from 'rxjs/operators';
+import { throwError, Observable } from 'rxjs';
 import * as config from './config';
 import { IngestionPostInterface } from './service.interface';
 
@@ -11,34 +11,35 @@ import { IngestionPostInterface } from './service.interface';
 export class IngestionExternalHttpService {
     filter: string = '/dbfilters';
     host: string = config.url.host || 'http://localhost:3000/ingestion/external';
-    data: BehaviorSubject<any>;
+    data: Observable<any> = new Observable();
 
     constructor(private http: HttpClient){
-        this.data = new BehaviorSubject(null);
     }
 
     get(id, provider){
         let endpoint = this.host;
         endpoint += `/${provider}/${id}`
-        this.http.get(endpoint).pipe(
-            retry(1),
-            catchError(this.handler)
-        ).subscribe((data)=>{
-            this.data.next(data);
-        });
+        
+        this.data = this.data.pipe(merge(
+            this.http.get(endpoint).pipe(
+                retry(1),
+                catchError(this.handler)
+            )
+        ))
     }
 
     post(json: IngestionPostInterface, options: Object = {}){
-        return this.http.post(this.host, json, options).pipe(
-            catchError(this.handler)
-        ).subscribe((data)=>{
-            this.data.next(data);
-        });;
+        this.data = this.data.pipe(merge(
+            this.http.post(this.host, json, options).pipe(
+                catchError(this.handler)
+                )
+            )
+        );
     }
 
     configure({ids, names, headers, providers}){
         const params = this.basicValidation(ids, names);
-        if(params.name.length === 0 && providers.length === 1 && headers.length === 0 && params.id.length === 1){
+        if(params.names.length === 0 && providers.length === 1 && headers.length === 0 && params.ids.length === 1){
             this.get(ids[0], providers[0]);
         }else{
             // replace headers with an object to enable search by psuedo bool and filter properties array
@@ -48,8 +49,8 @@ export class IngestionExternalHttpService {
     
     basicValidation(ids, names){
         const obj = {
-            id: ids.filter(item=>{ if(item){return item}}),
-            name: names.filter(item=>{ if(item){return item}})
+            ids: ids.filter(item=>{ if(item){return item}}),
+            names: names.filter(item=>{ if(item){return item}})
         }
         return obj;
     }

@@ -1,7 +1,7 @@
 export interface IngestionPostInterface {
     params: {
-        name: string[];
-        id: string[];
+        names: string[];
+        ids: string[];
     }
     options:{
         providers: string[];

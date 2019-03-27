@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
 
 @Component({
   selector: 'app-root',

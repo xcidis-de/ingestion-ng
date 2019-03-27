@@ -10,14 +10,15 @@ import { AppQueryFormComponent } from './app-query-form/app-query-form.component
 import { AppInfoDisplayComponent } from './app-info-display/app-info-display.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
-
+import { BasicTextObjectDisplay } from './app-info-display/display-templates/text-object.component';
 @NgModule({
   declarations: [
     AppComponent,
     NavigationBarComponent,
     AppQueryFormComponent,
     AppInfoDisplayComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    BasicTextObjectDisplay
   ],
   imports: [
     FormsModule,
@@ -25,6 +26,7 @@ import { IngestionExternalHttpService } from 'src/config/ingestion.http.service'
     AppRoutingModule,
     HttpClientModule,
   ],
+  entryComponents: [/**mycomponents here */BasicTextObjectDisplay],
   providers: [IngestionExternalHttpService],
   bootstrap: [AppComponent]
 })
