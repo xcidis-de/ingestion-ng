@@ -6,6 +6,7 @@ import { AppInfoDisplayComponent } from './app-info-display/app-info-display.com
 
 const routes: Routes = [
   {path: 'query', component: AppQueryFormComponent},
+  {path: 'information/:provider/:id', component: AppInfoDisplayComponent},
   {path: 'information', component: AppInfoDisplayComponent},
   {path: 'visualization', component: PageNotFoundComponent},
   {path: 'resources', component: PageNotFoundComponent},

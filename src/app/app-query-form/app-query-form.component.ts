@@ -23,7 +23,9 @@ export class AppQueryFormComponent implements OnInit {
   databases: string[] = ['PubChem', 'ZINC', 'UniProt', 'CrapOME', 'NCBI', 'COSMIC', 'PantherDB'];
   selected_databases: Object = {};
   selected_classes: Object = {};
-
+  usePseudonym: boolean = true;
+  recursive: boolean = false;
+  exact: boolean = true;
 
   constructor(private http: IngestionExternalHttpService) {
   }
@@ -55,11 +57,17 @@ export class AppQueryFormComponent implements OnInit {
 
   formEmitter(){
     const ids: string[] = this.ids.replace(/;|,|\s/g, ';').split(';');
-    const names: string[] = this.names.replace(/;|,|\s/g, ';').split(';');
+    const names: string[] = this.names.replace(/;|,/g, ';').split(';');
     const submit = {
       names,
       ids,
-      headers: Object.keys(this.selected_classes),
+      headers: {
+        //temp
+        classname: Object.keys(this.selected_classes)[0], //temp
+        usePseudonym: this.usePseudonym,
+        recursive: this.recursive,
+        exact: this.exact
+      },
       providers: Object.keys(this.selected_databases)
     }
     this.http.configure(submit)

@@ -20,13 +20,17 @@
       <br>
       <p id="advanced" (click)="showAdv()">Advanced  &#9660;</p>
       <div *ngIf="adv">
-        <label for="advPseudonyms">
-          <input id="checkbox" name="advPseudonyms" type="checkbox">
-          !Search Recursively
+        <label for="recursive">
+          <input id="checkbox" name="advRecursive" type="checkbox" [(ngModel)]="recursive">
+          !!Search Recursively
         </label>
-        <label for="advPseudonyms">
-          <input id="checkbox" name="advExact" type="checkbox">
-          !!Exact Match
+        <label>
+          <input id="checkbox" name="advPseudo" type="checkbox" [(ngModel)]="usePseudonym">
+          !Pseudonym
+        </label>
+        <label for="exact">
+          <input id="checkbox" name="advExact" type="checkbox" [(ngModel)]="exact">
+          !Exact Match
         </label>
       </div>
       <a routerLink="/information" routerLinkActive="active">

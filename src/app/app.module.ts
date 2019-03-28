@@ -11,6 +11,8 @@ import { AppInfoDisplayComponent } from './app-info-display/app-info-display.com
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
 import { BasicTextObjectDisplay } from './app-info-display/display-templates/text-object.component';
+import { DescriptionListDisplay } from './app-info-display/display-templates/description-list.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,8 @@ import { BasicTextObjectDisplay } from './app-info-display/display-templates/tex
     AppQueryFormComponent,
     AppInfoDisplayComponent,
     PageNotFoundComponent,
-    BasicTextObjectDisplay
+    BasicTextObjectDisplay,
+    DescriptionListDisplay
   ],
   imports: [
     FormsModule,
@@ -26,7 +29,7 @@ import { BasicTextObjectDisplay } from './app-info-display/display-templates/tex
     AppRoutingModule,
     HttpClientModule,
   ],
-  entryComponents: [/**mycomponents here */BasicTextObjectDisplay],
+  entryComponents: [BasicTextObjectDisplay, DescriptionListDisplay],
   providers: [IngestionExternalHttpService],
   bootstrap: [AppComponent]
 })

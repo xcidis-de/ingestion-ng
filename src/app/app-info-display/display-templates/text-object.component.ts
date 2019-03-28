@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
- 
+
 
 @Component({
   template: `
@@ -10,5 +10,4 @@ import { Component, Input } from '@angular/core';
 })
 export class BasicTextObjectDisplay {
   @Input() data: any;
-
 }

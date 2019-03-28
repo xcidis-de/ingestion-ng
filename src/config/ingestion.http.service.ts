@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { retry, catchError, merge } from 'rxjs/operators';
+import { retry, catchError, merge, last } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import * as config from './config';
 import { IngestionPostInterface } from './service.interface';
@@ -20,15 +20,18 @@ export class IngestionExternalHttpService {
         let endpoint = this.host;
         endpoint += `/${provider}/${id}`
         
-        this.data = this.data.pipe(merge(
+        this.data = this.data.pipe(
+            last(),
+            merge(
             this.http.get(endpoint).pipe(
                 retry(1),
                 catchError(this.handler)
             )
-        ))
+        ));
     }
 
     post(json: IngestionPostInterface, options: Object = {}){
+
         this.data = this.data.pipe(merge(
             this.http.post(this.host, json, options).pipe(
                 catchError(this.handler)
