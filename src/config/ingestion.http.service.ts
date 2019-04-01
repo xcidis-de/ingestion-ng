@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { retry, catchError, merge, last } from 'rxjs/operators';
-import { throwError, Observable } from 'rxjs';
+import { throwError, Observable, Subject } from 'rxjs';
 import * as config from './config';
 import { IngestionPostInterface } from './service.interface';
 
@@ -11,7 +11,7 @@ import { IngestionPostInterface } from './service.interface';
 export class IngestionExternalHttpService {
     filter: string = '/dbfilters';
     host: string = config.url.host || 'http://localhost:3000/ingestion/external';
-    data: Observable<any> = new Observable();
+    subject: Subject<any> = new Subject();
 
     constructor(private http: HttpClient){
     }
@@ -20,24 +20,22 @@ export class IngestionExternalHttpService {
         let endpoint = this.host;
         endpoint += `/${provider}/${id}`
         
-        this.data = this.data.pipe(
-            last(),
-            merge(
-            this.http.get(endpoint).pipe(
-                retry(1),
-                catchError(this.handler)
-            )
-        ));
+        this.http.get(endpoint).pipe(
+            catchError(this.handler)
+        ).subscribe((data)=>{
+            this.subject.next(data);
+        });
+
+
     }
 
     post(json: IngestionPostInterface, options: Object = {}){
 
-        this.data = this.data.pipe(merge(
-            this.http.post(this.host, json, options).pipe(
-                catchError(this.handler)
-                )
-            )
-        );
+        this.http.post(this.host, json, options).pipe(
+            catchError(this.handler)
+        ).subscribe((data)=>{
+           this.subject.next(data);
+        });
     }
 
     configure({ids, names, headers, providers}){

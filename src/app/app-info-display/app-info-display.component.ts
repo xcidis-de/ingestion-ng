@@ -16,7 +16,6 @@ import { Router } from '@angular/router';
 export class AppInfoDisplayComponent implements OnInit {
   @ViewChild("infoDisplay", {read: ViewContainerRef}) infoTemplate: ViewContainerRef;
 
-  steps: BehaviorSubject<Observable<any>> = new BehaviorSubject(null);
   data: any; //some interface
   basic: boolean = true;
 
@@ -27,10 +26,8 @@ export class AppInfoDisplayComponent implements OnInit {
   }
   
   subscription(){
-    this.observe.data.subscribe((data)=>{
-      setTimeout(()=>{
-        this.displayItems(data);
-      })
+    this.observe.subject.subscribe((data)=>{
+      this.displayItems(data);
     })
   
   }
