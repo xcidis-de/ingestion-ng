@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { retry, catchError, merge, last } from 'rxjs/operators';
-import { throwError, Observable, Subject } from 'rxjs';
+import { catchError, first } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
 import * as config from './config';
 import { IngestionPostInterface } from './service.interface';
 
@@ -20,30 +20,31 @@ export class IngestionExternalHttpService {
         let endpoint = this.host;
         endpoint += `/${provider}/${id}`
         
-        this.http.get(endpoint).pipe(
-            catchError(this.handler)
-        ).subscribe((data)=>{
+        this.http.get(endpoint).subscribe((data)=>{
             this.subject.next(data);
-        });
-
-
+            
+        })
     }
 
     post(json: IngestionPostInterface, options: Object = {}){
 
-        this.http.post(this.host, json, options).pipe(
-            catchError(this.handler)
-        ).subscribe((data)=>{
+        this.http.post(this.host, json, options).subscribe((data)=>{
            this.subject.next(data);
-        });
+        })
+    }
+
+    pager(index: number, token: string, provider: string){
+        this.http.post(this.host + '/page', {token, index, provider})
+            .subscribe((data)=>{
+                this.subject.next(data);
+            })
     }
 
     configure({ids, names, headers, providers}){
         const params = this.basicValidation(ids, names);
-        if(params.names.length === 0 && providers.length === 1 && headers.length === 0 && params.ids.length === 1){
+        if(params.names.length === 0 && providers.length === 1 && headers.recursive === false && params.ids.length === 1 && headers.exact === true){
             this.get(ids[0], providers[0]);
         }else{
-            // replace headers with an object to enable search by psuedo bool and filter properties array
             this.post({params, options:{headers, providers}})
         }
     }

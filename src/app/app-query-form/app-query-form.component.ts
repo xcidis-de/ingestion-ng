@@ -23,9 +23,9 @@ export class AppQueryFormComponent implements OnInit {
   databases: string[] = ['PubChem', 'ZINC', 'UniProt', 'CrapOME', 'NCBI', 'COSMIC', 'PantherDB'];
   selected_databases: Object = {};
   selected_classes: Object = {};
-  usePseudonym: boolean = true;
+  usePseudonym: boolean = false;
   recursive: boolean = false;
-  exact: boolean = true;
+  exact: boolean = false;
 
   constructor(private http: IngestionExternalHttpService) {
   }
@@ -65,8 +65,7 @@ export class AppQueryFormComponent implements OnInit {
         //temp
         classname: Object.keys(this.selected_classes)[0], //temp
         usePseudonym: this.usePseudonym,
-        recursive: this.recursive,
-        exact: this.exact
+        recursive: this.recursive
       },
       providers: Object.keys(this.selected_databases)
     }

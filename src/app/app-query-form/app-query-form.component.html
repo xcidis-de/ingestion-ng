@@ -28,10 +28,6 @@
           <input id="checkbox" name="advPseudo" type="checkbox" [(ngModel)]="usePseudonym">
           !Pseudonym
         </label>
-        <label for="exact">
-          <input id="checkbox" name="advExact" type="checkbox" [(ngModel)]="exact">
-          !Exact Match
-        </label>
       </div>
       <a routerLink="/information" routerLinkActive="active">
         <input type="button" id="query" name="submit" value="query" (click)="formEmitter()">
