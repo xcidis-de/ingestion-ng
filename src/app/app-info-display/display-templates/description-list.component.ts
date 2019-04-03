@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
 import { Router } from '@angular/router';
 
@@ -6,22 +6,27 @@ import { Router } from '@angular/router';
 @Component({
   template: `
   <div class="window">
-  <div *ngIf="pageable"><p (click)="page(false)"><</p><p (click)="page(true)">></p></div>
   <div *ngFor="let item of data" class="items"  (click)="this.get(item.external_id, item.provider)">
   <hr>
   <a>
-  <h4>{{item.metadata.title}}</h4>
+  <h4>{{item.metadata.IUPACName}}</h4>
   </a>
-  <p *ngIf="item.metadata.description">{{item.metadata.description}}</p>
+  <p *ngIf="item.metadata.MolecularFormula"><span style="font-weight: bold;">Molecular Formula: </span>{{item.metadata.MolecularFormula}}</p>
+  <p *ngIf="item.metadata.MolecularWeight"><span style="font-weight: bold;">Molecular Weight: </span>{{item.metadata.MolecularWeight}}</p>
+  <p *ngIf="item.metadata.InChIKey"><span style="font-weight: bold;">InChIKey: </span>{{item.metadata.InChIKey}}</p>
   <hr>
   </div>
+    <ul style="list-style-type:none; display: table; margin:0 auto;">
+      <li style="display:inline; font-size:2em; margin: 10px; cursor:pointer;" *ngFor="let number of available_pages" (click)="page(number)">{{number}}</li>
+    </ul>
   </div>
   `
 })
-export class DescriptionListDisplay {
+export class DescriptionListDisplay implements OnInit {
   @Input() data: any;
-  @Input() pageable: boolean;
-  
+  headers;
+  available_pages: Array<number | string> = [];
+  total_pages: Array<string | number> = [];
   page_index: number = 0;
 
   constructor(
@@ -30,19 +35,38 @@ export class DescriptionListDisplay {
       ){
 
   }
-
-  page(direction: boolean){
-    if(direction){
-      this.page_index += 50
-    }else if(this.page_index > 0){
-      this.page_index -= 50
+  ngOnInit(){
+    this.headers = this.data[0].headers;
+    console.log(this.headers);
+    let page_numbers: number = this.data[0].headers.page_size / 50;
+    if(this.data[0].headers.page_size % 50 !== 0){
+      page_numbers++
+    }
+    const pages: Array<number | string> = [];
+    for(let i = 1; i <= page_numbers; i++){
+      pages.push(i);
     }
 
-    this.refreshData();
-  }
+    
+    const current = this.data[0].headers.paging_index || 0;
+    this.total_pages = pages;
 
-  refreshData(){
-    this.http.pager(this.page_index, this.data[0].headers.paging_tokens, this.data[0].provider);
+    if(current < 3){
+      this.available_pages = pages.slice(0, current+3);
+    }else{
+      this.available_pages = pages.slice(current-3, current+5)
+    }
+
+    if(current < pages.length - 3){
+      this.available_pages.push('...');
+    }
+
+  }
+  
+  page(number:number){
+    const headers = this.data[0].headers;
+    headers.paging_index = number - 1;
+    this.http.pager(this.data[0].headers, this.data[0].provider);
   }
 
   get(id, provider){

@@ -57,7 +57,7 @@ export class AppQueryFormComponent implements OnInit {
 
   formEmitter(){
     const ids: string[] = this.ids.replace(/;|,|\s/g, ';').split(';');
-    const names: string[] = this.names.replace(/;|,/g, ';').split(';');
+    const names: string[] = this.names.replace(/;/g, ';').split(';');
     const submit = {
       names,
       ids,

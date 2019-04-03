@@ -27,14 +27,13 @@ export class IngestionExternalHttpService {
     }
 
     post(json: IngestionPostInterface, options: Object = {}){
-
         this.http.post(this.host, json, options).subscribe((data)=>{
            this.subject.next(data);
         })
     }
 
-    pager(index: number, token: string, provider: string){
-        this.http.post(this.host + '/page', {token, index, provider})
+    pager(headers, provider: string[]){
+        this.http.post(this.host + '/page', {headers, provider})
             .subscribe((data)=>{
                 this.subject.next(data);
             })
@@ -42,7 +41,7 @@ export class IngestionExternalHttpService {
 
     configure({ids, names, headers, providers}){
         const params = this.basicValidation(ids, names);
-        if(params.names.length === 0 && providers.length === 1 && headers.recursive === false && params.ids.length === 1 && headers.exact === true){
+        if(params.names.length === 0 && providers.length === 1 && headers.recursive === false && params.ids.length === 1){
             this.get(ids[0], providers[0]);
         }else{
             this.post({params, options:{headers, providers}})

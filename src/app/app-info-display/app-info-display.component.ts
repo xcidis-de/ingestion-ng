@@ -32,21 +32,20 @@ export class AppInfoDisplayComponent implements OnInit {
   
   displayItems(data){
     let newComponent;
-    let pageable: boolean = false;
-    if(_.isArray(data)){
-      pageable = _.get(data[0], 'headers.page_tokens[0]') ? true : false;
-      newComponent = this.componentFactoryResolver.resolveComponentFactory(DescriptionListDisplay);
-    }else{
-      data = Object.values(data.metadata);
-      newComponent = this.componentFactoryResolver.resolveComponentFactory(BasicTextObjectDisplay)
-    }
-
     let viewReference = this.infoTemplate
     viewReference.clear();
 
-    let component = viewReference.createComponent(newComponent);
-    (<InfoDisplayInterface>component.instance).data = data;
-    (<InfoDisplayInterface>component.instance).pageable = pageable;
+    if(_.isArray(data)){
+      newComponent = this.componentFactoryResolver.resolveComponentFactory(DescriptionListDisplay);
+      let component = viewReference.createComponent(newComponent);
+      (<InfoDisplayInterface>component.instance).data = [];
+      (<InfoDisplayInterface>component.instance).data.push(...data);
+    }else{
+      data = Object.values(data.metadata);
+      newComponent = this.componentFactoryResolver.resolveComponentFactory(BasicTextObjectDisplay)
+      let component = viewReference.createComponent(newComponent);
+      (<InfoDisplayInterface>component.instance).data = data;
+    }
   }
 
   ngOnInit() {

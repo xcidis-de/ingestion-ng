@@ -7,14 +7,18 @@ import { AppInfoDisplayComponent } from './app-info-display/app-info-display.com
 const routes: Routes = [
   {path: 'query', component: AppQueryFormComponent},
   {path: 'information/:provider/:id', component: AppInfoDisplayComponent},
-  {path: 'information', component: AppInfoDisplayComponent},
+  {
+    path: 'information', 
+    component: AppInfoDisplayComponent, 
+    runGuardsAndResolvers: `always`
+  },
   {path: 'visualization', component: PageNotFoundComponent},
   {path: 'resources', component: PageNotFoundComponent},
   { path: '**', redirectTo: '/query', pathMatch: 'full' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {enableTracing: false})],
+  imports: [RouterModule.forRoot(routes, {enableTracing: false, onSameUrlNavigation: `reload`})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
