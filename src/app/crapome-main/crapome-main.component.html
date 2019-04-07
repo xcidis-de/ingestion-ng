@@ -1,0 +1,14 @@
+<div class="background-form">
+  <div class="main-form">
+    <form>
+      <select>
+        <option *ngFor="let species of listed" value=species>{{species}}</option>
+      </select>
+      <textarea name="file" class='text-area-size' [(ngModel)]="file"></textarea>
+      <span>
+        <button (click)="openExplorer()">upload</button>
+        <button (click)="readForm()">submit</button>
+      </span>
+    </form>
+  </div>
+</div>

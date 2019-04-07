@@ -1,17 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+//Components
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { AppQueryFormComponent } from './app-query-form/app-query-form.component';
 import { AppInfoDisplayComponent } from './app-info-display/app-info-display.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
-import { BasicTextObjectDisplay } from './app-info-display/display-templates/text-object.component';
-import { DescriptionListDisplay } from './app-info-display/display-templates/description-list.component';
+import { BasicTextObjectDisplay } from './app-info-display/display-templates/pubchem/text-object.component';
+import { DescriptionListDisplay } from './app-info-display/display-templates/pubchem/description-list.component';
+import { CrapomeListDisplay } from './app-info-display/display-templates/crapome/crapome-list.component';
+import { CrapomeMainComponent } from './crapome-main/crapome-main.component';
+import { CrapomeExpComponent, SafePipe } from './app-info-display/display-templates/crapome/experiment-list.component';
+import { CrapomeFinalCompare } from './app-info-display/display-templates/crapome/crapome-compare.component'
+import { CrapomeExpProtein } from './app-info-display/display-templates/crapome/crapome-exp-prot.component';
+
+//Services
+import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
+import { CrapomeDataInjectionService } from './app-info-display/display-templates/injection-services/crapome-injection.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +30,13 @@ import { DescriptionListDisplay } from './app-info-display/display-templates/des
     AppInfoDisplayComponent,
     PageNotFoundComponent,
     BasicTextObjectDisplay,
-    DescriptionListDisplay
+    DescriptionListDisplay,
+    CrapomeListDisplay,
+    CrapomeMainComponent,
+    CrapomeExpComponent,
+    CrapomeFinalCompare,
+    CrapomeExpProtein,
+    SafePipe
   ],
   imports: [
     FormsModule,
@@ -29,8 +44,10 @@ import { DescriptionListDisplay } from './app-info-display/display-templates/des
     AppRoutingModule,
     HttpClientModule,
   ],
-  entryComponents: [BasicTextObjectDisplay, DescriptionListDisplay],
-  providers: [IngestionExternalHttpService],
+  entryComponents: [BasicTextObjectDisplay, DescriptionListDisplay, CrapomeListDisplay, CrapomeExpProtein],
+  providers: [IngestionExternalHttpService, CrapomeDataInjectionService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+
+}

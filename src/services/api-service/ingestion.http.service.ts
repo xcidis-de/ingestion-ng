@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, first } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
 import * as config from './config';
@@ -20,20 +20,20 @@ export class IngestionExternalHttpService {
         let endpoint = this.host;
         endpoint += `/${provider}/${id}`
         
-        this.http.get(endpoint).subscribe((data)=>{
+        this.http.get(endpoint).pipe(first()).subscribe((data)=>{
             this.subject.next(data);
             
         })
     }
 
     post(json: IngestionPostInterface, options: Object = {}){
-        this.http.post(this.host, json, options).subscribe((data)=>{
+        this.http.post(this.host, json, options).pipe(first()).subscribe((data)=>{
            this.subject.next(data);
         })
     }
 
     pager(headers, provider: string[]){
-        this.http.post(this.host + '/page', {headers, provider})
+        this.http.post(this.host + '/page', {headers, provider}).pipe(first())
             .subscribe((data)=>{
                 this.subject.next(data);
             })

@@ -1,0 +1,26 @@
+
+.background-form {
+    margin: 0 auto;
+    width: 80%;
+    margin-top: 2%;
+    background-color: grey;
+    padding: 5px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.main-form {
+    background-color: #fcf6e8;
+    padding: 35px;
+    border-radius: 5px 5px 5px 5px;
+    padding-bottom: 80px;
+}
+.text-area-size {
+    resize: none;
+    height: 40vh;
+    width: 60vw;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#upload{
+    cursor: pointer;
+}

@@ -1,6 +1,7 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { IngestionExternalHttpService } from 'src/config/ingestion.http.service';
-
+import { Component, OnInit } from '@angular/core';
+import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
+import { AppInfoDisplayComponent } from '../app-info-display/app-info-display.component';
+import { Router } from '@angular/router';
 
 interface Name extends Element {
   name: string
@@ -27,7 +28,7 @@ export class AppQueryFormComponent implements OnInit {
   recursive: boolean = false;
   exact: boolean = false;
 
-  constructor(private http: IngestionExternalHttpService) {
+  constructor(private http: IngestionExternalHttpService, private router: Router) {
   }
 
   showAdv(){
@@ -56,8 +57,9 @@ export class AppQueryFormComponent implements OnInit {
   }
 
   formEmitter(){
-    const ids: string[] = this.ids.replace(/;|,|\s/g, ';').split(';');
-    const names: string[] = this.names.replace(/;/g, ';').split(';');
+    
+    const ids: string[] = this.ids.replace(/,|\s/g, ';').split(';');
+    const names: string[] = this.names.split(';');
     const submit = {
       names,
       ids,
@@ -66,10 +68,11 @@ export class AppQueryFormComponent implements OnInit {
         classname: Object.keys(this.selected_classes)[0], //temp
         usePseudonym: this.usePseudonym,
         recursive: this.recursive
+
       },
       providers: Object.keys(this.selected_databases)
     }
     this.http.configure(submit)
-
+    
   }
 }
