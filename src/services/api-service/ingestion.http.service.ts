@@ -28,7 +28,7 @@ export class IngestionExternalHttpService {
 
     post(json: IngestionPostInterface, options: Object = {}){
         this.http.post(this.host, json, options).pipe(first()).subscribe((data)=>{
-           this.subject.next(data);
+            this.subject.next(data);
         })
     }
 

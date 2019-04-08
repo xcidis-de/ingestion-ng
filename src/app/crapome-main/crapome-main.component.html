@@ -1,9 +1,18 @@
 <div class="background-form">
   <div class="main-form">
-    <form>
-      <select>
-        <option *ngFor="let species of listed" value=species>{{species}}</option>
-      </select>
+    <form name="main-form">
+      <div>
+        <p>species: </p>
+        <select [(ngModel)]="spec" name="spec">
+          <option *ngFor="let species of listed" value="{{this.mapped[species]}}">{{species}}</option>
+        </select>
+      </div>
+      <div>
+        <p>Input type: </p>
+        <select [(ngModel)]="type" name="type">
+            <option *ngFor="let item of input_type" value="{{item}}">{{item}}</option>
+        </select>
+      </div>
       <textarea name="file" class='text-area-size' [(ngModel)]="file"></textarea>
       <span>
         <button (click)="openExplorer()">upload</button>

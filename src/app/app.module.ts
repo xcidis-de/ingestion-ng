@@ -15,12 +15,12 @@ import { DescriptionListDisplay } from './app-info-display/display-templates/pub
 import { CrapomeListDisplay } from './app-info-display/display-templates/crapome/crapome-list.component';
 import { CrapomeMainComponent } from './crapome-main/crapome-main.component';
 import { CrapomeExpComponent, SafePipe } from './app-info-display/display-templates/crapome/experiment-list.component';
-import { CrapomeFinalCompare } from './app-info-display/display-templates/crapome/crapome-compare.component'
 import { CrapomeExpProtein } from './app-info-display/display-templates/crapome/crapome-exp-prot.component';
-
+import { CrapomeProteinList } from './app-info-display/display-templates/crapome/protein-list.component'
 //Services
 import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
 import { CrapomeDataInjectionService } from './app-info-display/display-templates/injection-services/crapome-injection.service';
+
 
 @NgModule({
   declarations: [
@@ -34,8 +34,8 @@ import { CrapomeDataInjectionService } from './app-info-display/display-template
     CrapomeListDisplay,
     CrapomeMainComponent,
     CrapomeExpComponent,
-    CrapomeFinalCompare,
     CrapomeExpProtein,
+    CrapomeProteinList,
     SafePipe
   ],
   imports: [

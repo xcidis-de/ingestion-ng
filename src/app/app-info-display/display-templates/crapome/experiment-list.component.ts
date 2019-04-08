@@ -42,26 +42,23 @@ export class SafePipe implements PipeTransform {
         </div>
     `,
     styleUrls: ['./experiment-list.component.scss'],
-    selector: '<exp-list-comp>'
+    selector: 'exp-list-comp'
 })
 export class CrapomeExpComponent implements OnInit{
-    @Input() listed: any;
+    @Input() list_item: any;
     info: boolean = false;
 
     constructor(
-        private http: IngestionExternalHttpService
+        private http: IngestionExternalHttpService,
+        private injector: CrapomeDataInjectionService
     ){
-        if(!this.listed){
-            //get list from service
-            //this.injector.getlistitem()
-        }
     }
 
     ngOnInit(){
     }
 
     getSrc(){
-        const experiment = this.listed.metadata.expt;
+        const experiment = this.list_item.metadata.expt;
         const expNum = experiment.slice(2);
         const url = `http://cors.io/?http://crapome.org/?q=viewexperiment/${expNum}&width=500&height="80%"&iframe=true`
         return url;
@@ -75,17 +72,18 @@ export class CrapomeExpComponent implements OnInit{
     doExperiment(){
         //pass whole dataset to injector
         //this.injector.setExperiment()
-        const exp = this.listed.metadata.expt
+        const exp = this.list_item.metadata.expt
         const final = {
             ids: [],
-            names: [this.listed.external_id],
+            names: [this.list_item.external_id],
             headers: {
                 crapome_params: Object.assign(
-                this.listed.headers.crapome_params, 
+                this.list_item.headers.crapome_params, 
                 {exps: [exp]}),
             },
             providers: ['crapome']
         }
+        this.injector.set('refseq', this.list_item.metadata.refSeqID)
         this.http.configure(final)
     }
 

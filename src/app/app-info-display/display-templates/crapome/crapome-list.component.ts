@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 @Component({
     template: `
     <div class="window">
-      <div class="crapome-list" *ngIf="(!params.proteins.length && !params.exps.length); else expBlock">
+      <div class="crapome-list" *ngIf="(!params.proteins.length && !params.exps.length); else crossRefBlock">
         <hr>
         <p>
           <span id='title'>Input: </span>
@@ -33,19 +33,24 @@ import * as _ from 'lodash';
           </span>
         </p>
         <hr>
-      </div>
-      <ng-template #expBlock>
-        <div *ngIf="!params.exps.length; else finalCompare">
-          <exp-list-comp  [listed]=data></exp-list-comp>
+    </div>
+      <ng-template #crossRefBlock>
+        <div *ngIf="!params.exps.length; else expBlock">
+          <exp-list-comp  [list_item]=data></exp-list-comp>
         </div>
-        <ng-template #finalCompare>
-          <final-compare></final-compare>
+        <ng-template #expBlock>
+          <div *ngIf="!params.proteins.length; else finalCompare">
+            <protein-list-comp [list_item]=data></protein-list-comp>
+          </div>
+          <ng-template #finalCompare>
+            <final-compare></final-compare>
+          </ng-template>
         </ng-template>
-      </ng-template>
+        </ng-template>
     </div>
     `,
     styleUrls: ['./crapome-list.component.scss']
-  })
+})
 export class CrapomeListDisplay implements OnInit {
     @Input() data: any;
     mapped: {[x:string]:string} = CrapomeMainComponent.mapped;

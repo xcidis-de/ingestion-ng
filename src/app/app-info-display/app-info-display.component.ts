@@ -38,6 +38,7 @@ export class AppInfoDisplayComponent implements OnInit {
     viewReference.clear();
     if(_.isArray(data)){
       for(const item of data){
+
         if(item.provider === 'pubchem'){
           newComponent = this.componentFactoryResolver.resolveComponentFactory(DescriptionListDisplay);
         }else if(item.provider === 'crapome'){
@@ -53,7 +54,7 @@ export class AppInfoDisplayComponent implements OnInit {
         newComponent = this.componentFactoryResolver.resolveComponentFactory(CrapomeExpProtein);
       }
       let component = viewReference.createComponent(newComponent);
-      (<InfoDisplayInterface>component.instance).data = Object.values(data.metadata);
+      (<InfoDisplayInterface>component.instance).data = data
     }
 
     this.router.navigateByUrl('/information');

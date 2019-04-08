@@ -9,13 +9,16 @@ import { Router } from '@angular/router';
 })
 export class CrapomeMainComponent {
   private file: string;
-  private species: string = 'human';
+  private spec: string = 'human';
+  private type: string = 'experiment';
   static readonly mapped = {
     'Human': 'human',
     'E. coli': 'ecoli',
     'S. cerevisiae': 'yeast'
   }
+  private mapped = CrapomeMainComponent.mapped;
   private listed: string[];
+  private input_type: string[] = ['experiment', 'gene'];
 
   constructor(
     private http: IngestionExternalHttpService,
@@ -24,29 +27,42 @@ export class CrapomeMainComponent {
       this.listed = Object.keys(CrapomeMainComponent.mapped);
   }
 
-  setOption(value){
-    this.species = CrapomeMainComponent.mapped[value]
-  }
-
   openExplorer(){
 
   }
+
 
   readForm(){
     const delimiter = ';'
     const data: string[] = this.file.replace(' ', '').split(delimiter);
     data.pop();
-
-    const formatted = {
-      ids: [],
-      names: data,
-      headers: {
-        crapome_params:{
-          species: this.species
-        }
-      },
-      providers: ['crapome']
-    }
+    
+    let formatted
+    if(this.type === 'experiment'){
+      formatted = {
+        ids: [],
+        names: [data],
+        headers: {
+          crapome_params:{
+            exps: data,
+            species: this.spec
+          }
+        },
+        providers: ['crapome']
+      }
+    }else{
+      formatted = {
+        ids: [],
+        names: data[0],
+        headers: {
+          crapome_params:{
+            species: this.spec,
+            proteins: data
+          }
+        },
+        providers: ['crapome']
+      }
+    } 
     this.http.configure(formatted);
     this.router.navigateByUrl(`/information`)
   }
