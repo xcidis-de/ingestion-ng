@@ -4,6 +4,7 @@ import { catchError, first } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
 import * as config from './config';
 import { IngestionPostInterface } from './service.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -13,23 +14,29 @@ export class IngestionExternalHttpService {
     host: string = config.url.host || 'http://localhost:3000/ingestion/external';
     subject: Subject<any> = new Subject();
 
-    constructor(private http: HttpClient){
+    constructor(
+        private http: HttpClient,
+        private router: Router){
+
     }
 
     get(id, provider){
-        let endpoint = this.host;
-        endpoint += `/${provider}/${id}`
+        let host = this.host;
+        let endpoint = `${provider}/${id}`
         
-        this.http.get(endpoint).pipe(first()).subscribe((data)=>{
+        this.http.get(host + '/' + endpoint).pipe(
+            first()
+            ).subscribe((data)=>{
             this.subject.next(data);
-            
         })
     }
 
     post(json: IngestionPostInterface, options: Object = {}){
-        this.http.post(this.host, json, options).pipe(first()).subscribe((data)=>{
+        this.http.post(this.host, json, options).pipe(
+            first()
+            ).subscribe((data)=>{
             this.subject.next(data);
-        })
+        });
     }
 
     pager(headers, provider: string[]){

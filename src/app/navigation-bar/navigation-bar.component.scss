@@ -3,6 +3,10 @@
     width: 100vw;
     height: 5vh;
     background-color: purple;
+    position: fixed; 
+    margin-top: 50px;
+    z-index: 10;
+    opacity: 1;
 }
 
 .navigation-list {

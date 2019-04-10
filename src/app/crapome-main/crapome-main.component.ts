@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
 import { Router } from '@angular/router';
+import { CrapomeDataInjectionService } from '../app-info-display/display-templates/injection-services/crapome-injection.service';
 
 @Component({
   selector: 'app-crapome-main',
@@ -22,7 +23,8 @@ export class CrapomeMainComponent {
 
   constructor(
     private http: IngestionExternalHttpService,
-    private router: Router
+    private router: Router,
+    private injector: CrapomeDataInjectionService
     ) {
       this.listed = Object.keys(CrapomeMainComponent.mapped);
   }
@@ -31,20 +33,34 @@ export class CrapomeMainComponent {
 
   }
 
-
+  organizeInput(data: string[]): string[]{
+    const num_reg = /^\d+/g;
+    const cc_added = data.map((el)=>{
+      if(num_reg.test(el)){
+        return 'CC' + el;
+      }else{
+        return el.toUpperCase();
+      }
+    })    
+    return cc_added;
+  }
   readForm(){
-    const delimiter = ';'
-    const data: string[] = this.file.replace(' ', '').split(delimiter);
+    const input_one = ';'
+    const delimiters = new RegExp(`${input_one}`)
+    const data: string[] = this.file.replace(' ', '').split(delimiters);
     data.pop();
     
-    let formatted
+    let formatted;
     if(this.type === 'experiment'){
+      const exps = <Array<string>>this.organizeInput(<Array<string>>data)
+      this.injector.set('exps', exps)
+ 
       formatted = {
         ids: [],
-        names: [data],
+        names: data,
         headers: {
           crapome_params:{
-            exps: data,
+            exps,
             species: this.spec
           }
         },
@@ -53,7 +69,7 @@ export class CrapomeMainComponent {
     }else{
       formatted = {
         ids: [],
-        names: data[0],
+        names: data,
         headers: {
           crapome_params:{
             species: this.spec,

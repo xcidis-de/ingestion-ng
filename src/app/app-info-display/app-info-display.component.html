@@ -1,3 +1,7 @@
-<div class="info-display-window">
-  <ng-template #infoDisplay>ok</ng-template>
+<div class="info-display-window" style='margin-top: 100px;' *ngIf="data; else spinner">
+  <ng-template #infoDisplay style="display: relative; overflow-y: scroll;">
+  </ng-template>
 </div>
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

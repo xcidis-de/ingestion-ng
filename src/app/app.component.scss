@@ -11,3 +11,15 @@ body {
     vertical-align: top;
     line-height: 1.7;
 }
+
+.title {
+    margin-top: 0px;
+    width:100%;
+    position:fixed;
+    z-index:10;
+    background:inherit;
+    position: fixed;
+    background-color: white; 
+    height: 60px;
+    opacity: 1;
+}

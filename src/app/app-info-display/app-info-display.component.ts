@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CrapomeExpProtein} from './display-templates/crapome/crapome-exp-prot.component';
 
+
 @Component({
   selector: 'app-app-info-display',
   templateUrl: './app-info-display.component.html',
@@ -26,16 +27,12 @@ export class AppInfoDisplayComponent implements OnInit {
   ){
   }
   
-  subscription(){
-    this.observe.subject.subscribe((data)=>{
-      this.displayItems(data);
-    })
-  }
   
   displayItems(data){
     let newComponent;
     let viewReference: ViewContainerRef = this.infoTemplate
     viewReference.clear();
+
     if(_.isArray(data)){
       for(const item of data){
 
@@ -49,6 +46,7 @@ export class AppInfoDisplayComponent implements OnInit {
       }
     }else{
       if(data.provider === 'pubchem'){
+        console.log('pubchem');
         newComponent = this.componentFactoryResolver.resolveComponentFactory(BasicTextObjectDisplay);
       }else if(data.provider === 'crapome'){
         newComponent = this.componentFactoryResolver.resolveComponentFactory(CrapomeExpProtein);
@@ -61,7 +59,15 @@ export class AppInfoDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscription();
+    this.observe.subject.subscribe((data)=>{
+      if(data){
+        this.data = true;
+        setTimeout(()=>{
+          this.displayItems(data);
+        }, 100)
+      }
+    })
+
   }
 
 }

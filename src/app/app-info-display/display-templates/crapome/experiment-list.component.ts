@@ -17,13 +17,13 @@ export class SafePipe implements PipeTransform {
         <div class='exp-border'>
             <p>
                 <span>
-                    RefSeqID: {{listed.metadata.refSeqID}}
+                    RefSeqID: {{list_item.metadata.refSeqID}}
                 </span>
                 <span>
-                    Gene: {{listed.metadata.geneSymbols}}
+                    Gene: {{list_item.metadata.geneSymbols}}
                 </span>
                 <span>
-                    Expt.: {{listed.metadata.expt}}
+                    Expt.: {{list_item.metadata.expt}}
                 </span>
                 <span>
                     <button (click)="doExperiment()">
@@ -58,9 +58,8 @@ export class CrapomeExpComponent implements OnInit{
     }
 
     getSrc(){
-        const experiment = this.list_item.metadata.expt;
-        const expNum = experiment.slice(2);
-        const url = `http://cors.io/?http://crapome.org/?q=viewexperiment/${expNum}&width=500&height="80%"&iframe=true`
+        let experiment = this.list_item.metadata.expt;
+        const url = `http://cors.io/?http://crapome.org/?q=viewexperiment/${experiment.slice(2)}&width=500&height=500&iframe=true`
         return url;
     }
 

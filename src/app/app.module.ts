@@ -17,10 +17,12 @@ import { CrapomeMainComponent } from './crapome-main/crapome-main.component';
 import { CrapomeExpComponent, SafePipe } from './app-info-display/display-templates/crapome/experiment-list.component';
 import { CrapomeExpProtein } from './app-info-display/display-templates/crapome/crapome-exp-prot.component';
 import { CrapomeProteinList } from './app-info-display/display-templates/crapome/protein-list.component'
+import { SpinnerComponent } from './spinner/spinner.component';
 //Services
 import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
 import { CrapomeDataInjectionService } from './app-info-display/display-templates/injection-services/crapome-injection.service';
-
+import { CacheRouteReuseStrategy } from '../services/routeCache/cache-router.service';
+import { RouteReuseStrategy } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { CrapomeDataInjectionService } from './app-info-display/display-template
     CrapomeExpComponent,
     CrapomeExpProtein,
     CrapomeProteinList,
-    SafePipe
+    SafePipe,
+    SpinnerComponent
   ],
   imports: [
     FormsModule,
@@ -45,7 +48,10 @@ import { CrapomeDataInjectionService } from './app-info-display/display-template
     HttpClientModule,
   ],
   entryComponents: [BasicTextObjectDisplay, DescriptionListDisplay, CrapomeListDisplay, CrapomeExpProtein],
-  providers: [IngestionExternalHttpService, CrapomeDataInjectionService],
+  providers: [IngestionExternalHttpService, CrapomeDataInjectionService, {
+    provide: RouteReuseStrategy,
+    useClass: CacheRouteReuseStrategy
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

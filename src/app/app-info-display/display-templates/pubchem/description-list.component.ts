@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IngestionExternalHttpService } from '../../../../services/api-service/ingestion.http.service';
 import { Router } from '@angular/router';
-
+import {SpinnerComponent } from '../../../spinner/spinner.component';
 
 @Component({
   template: `
   <div class="window">
-  <div (click)="this.get(this.data.external_id, this.data.provider)">
+  <div (click)="this.get(this.data.external_id, this.data.provider)" *ngIf="data; else spinner">
   <hr>
   <a>
   <h4>{{this.data.metadata.IUPACName}}</h4>
@@ -16,6 +16,9 @@ import { Router } from '@angular/router';
   <p *ngIf="this.data.metadata.InChIKey"><span style="font-weight: bold;">InChIKey: </span>{{this.data.metadata.InChIKey}}</p>
   <hr>
   </div>
+    <ng-template #spinner>
+      <app-spinner></app-spinner>
+    </ng-template>
   </div>
   `
 })

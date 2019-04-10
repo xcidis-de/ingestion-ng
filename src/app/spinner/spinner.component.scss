@@ -1,0 +1,17 @@
+.spinner {
+    position: absolute;
+    margin-top: 0;
+    top: 89%;
+    left: 85%;
+    width: 65px;
+    height: 65px;
+    border: 5px solid  lightgrey;
+    border-top: 5px solid #3498db;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+    border-radius: 50%;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }  

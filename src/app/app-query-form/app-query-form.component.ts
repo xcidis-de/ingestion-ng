@@ -21,7 +21,7 @@ export class AppQueryFormComponent implements OnInit {
   names: string = '';
   adv: boolean = false;
   classifications: string[] = ['Protein', 'Gene', 'Chemistry'];
-  databases: string[] = ['PubChem', 'ZINC', 'UniProt', 'CrapOME', 'NCBI', 'COSMIC', 'PantherDB'];
+  databases: string[] = ['PubChem', 'CRAPome'];
   selected_databases: Object = {};
   selected_classes: Object = {};
   usePseudonym: boolean = false;

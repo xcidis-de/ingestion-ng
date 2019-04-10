@@ -3,6 +3,7 @@ import { CrapomeMainComponent } from 'src/app/crapome-main/crapome-main.componen
 import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { CrapomeDataInjectionService } from '../injection-services/crapome-injection.service';
 
 @Component({
     template: `
@@ -40,13 +41,13 @@ import * as _ from 'lodash';
         </div>
         <ng-template #expBlock>
           <div *ngIf="!params.proteins.length; else finalCompare">
-            <protein-list-comp [list_item]=data></protein-list-comp>
+            <protein-list-comp [exp_prot]=data></protein-list-comp>
           </div>
           <ng-template #finalCompare>
             <final-compare></final-compare>
           </ng-template>
         </ng-template>
-        </ng-template>
+      </ng-template>
     </div>
     `,
     styleUrls: ['./crapome-list.component.scss']
@@ -61,7 +62,7 @@ export class CrapomeListDisplay implements OnInit {
 
     constructor(
       private http: IngestionExternalHttpService,
-      private router: Router
+      private router: Router,
       ){
       }
       
