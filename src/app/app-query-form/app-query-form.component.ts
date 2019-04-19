@@ -34,6 +34,7 @@ export class AppQueryFormComponent implements OnInit {
   showAdv(){
     this.adv = this.adv === true ? false : true;
   }
+  
   ngOnInit() {  
   }
 
@@ -50,7 +51,7 @@ export class AppQueryFormComponent implements OnInit {
       if(this.selected_databases[value]){
         delete this.selected_databases[value];
       }else{
-        this.selected_databases[value] = value;
+        this.selected_databases[value] = value.toLowerCase();
       }
     }
 
@@ -64,15 +65,14 @@ export class AppQueryFormComponent implements OnInit {
       names,
       ids,
       headers: {
-        //temp
         classname: Object.keys(this.selected_classes)[0], //temp
         usePseudonym: this.usePseudonym,
-        recursive: this.recursive
-
+        recursive: this.recursive,
+        exact: this.exact
       },
-      providers: Object.keys(this.selected_databases)
+      providers: Object.keys(this.selected_databases).map(el => el.toLowerCase())
     }
-    this.http.configure(submit)
+    this.http.configure(submit, {route: '/ingestion/external'})
     
   }
 }

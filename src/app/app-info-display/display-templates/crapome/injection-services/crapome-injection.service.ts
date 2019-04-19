@@ -1,28 +1,31 @@
 import { Injectable } from '@angular/core';
+import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
+import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
+import { get } from 'lodash';
 
 @Injectable({
     providedIn: "root"
 })
 export class CrapomeDataInjectionService {
-    cache = {};
+    private save = {};
     private table = {}
     private view = [];
     public length: number;
     private indexedKeys: string[];
 
-    set(name:string, item: any){
-        if(!this.cache[item]){
-            this.cache[name] = item;
-            return true;
-        }else{
-            //write error
-            return item;
-        }
+    constructor(
+        private cache: CacheRouteReuseStrategy,
+        private http: IngestionExternalHttpService
+    ){
+
+    }
+    set(name: string, item: any){
+        this.save[name] = item
     }
 
     get(name: string){
-        const item = this.cache[name];
-        delete this.cache[name];
+        const item = this.save[name];
+        delete this.save[name];
         return item;
     }
 
@@ -54,6 +57,7 @@ export class CrapomeDataInjectionService {
             return this.view
         }
     }
+
 
     download(){
         var newBlob = new Blob([JSON.stringify(this.table)], { type: "application/json" });

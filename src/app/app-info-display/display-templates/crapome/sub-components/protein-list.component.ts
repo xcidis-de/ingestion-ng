@@ -24,7 +24,7 @@ import { isNumber, isNaN, get, isObject } from 'lodash';
             <td class='set-table-column' *ngFor="let exp of exps">{{getPsm(gene, exp)}}</td>
         </tbody>
         </table>
-        <button style="margin-top: 10px;" (click)="download()">Download JSON</button>
+        <button style="margin-top: 10px;" (click)="download()">Download</button>
         <p style="display: inline;" class="center heavy red">
             <span (click)="page(0)">
                 <

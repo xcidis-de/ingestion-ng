@@ -8,3 +8,10 @@ export interface IngestionPostInterface {
         headers: string[];
     }
 }
+
+export interface InternalPostInterface {
+    body: {
+        _id?: string;
+        text?: string
+    }
+}

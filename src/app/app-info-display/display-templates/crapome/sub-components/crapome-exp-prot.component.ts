@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { CrapomeDataInjectionService } from '../injection-services/crapome-injection.service';
 import { map } from 'lodash';
+import { ActivatedRoute } from '@angular/router';
+import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
 
 @Component({
     template:`
@@ -41,11 +43,12 @@ export class CrapomeExpProtein implements OnInit{
         peptide: string
     }[];
 
-    constructor(private injector: CrapomeDataInjectionService){
+    constructor(
+       private injector: CrapomeDataInjectionService){
 
     }
     ngOnInit(){
-        this.data.refseq = this.injector.get('refseq');
+        this.data.refseq = this.injector.get('peptides').metadata.RefSeq;
         this.table = map(this.data.metadata, (el, peptide)=>{
             return {
                 peptide,

@@ -1,6 +1,6 @@
-<div class="background-form" >
+<div class="background-form">
   <div class="main-form">
-    <form name="main-form">
+    <form name="main-form" *ngIf="!upload; else uploadComponent">
       <div>
         <p>species: </p>
         <select [(ngModel)]="spec" name="spec">
@@ -14,10 +14,16 @@
         </select>
       </div>
       <textarea name="file" class='text-area-size' [(ngModel)]="file"></textarea>
+      <br>
       <span>
-        <button (click)="openExplorer()">upload</button>
+        <button (click)="uploadForm()">upload</button>
         <button (click)="readForm()">submit</button>
       </span>
     </form>
+    <ng-template #uploadComponent>
+      <div>
+        <app-crapome-upload></app-crapome-upload>
+      </div>
+    </ng-template>
   </div>
 </div>

@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IngestionExternalHttpService } from '../../../../services/api-service/ingestion.http.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {SpinnerComponent } from '../../../spinner/spinner.component';
+import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
 
 @Component({
   template: `
@@ -31,17 +32,16 @@ export class DescriptionListDisplay implements OnInit {
 
   constructor(
       private http: IngestionExternalHttpService,
-      private router: Router
-      ){
+      private route: ActivatedRoute,
+      private cache: CacheRouteReuseStrategy
+  ){
 
   }
   ngOnInit(){
     this.headers = this.data.headers;
   }
-  
-
 
   get(id, provider){
-    this.http.get(id, provider)
+    this.http.configure({ids:[id], names:[], providers: [provider], headers:{}}, {route:'/ingestion/external'})
   }
 }

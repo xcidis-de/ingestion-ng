@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CrapomeMainComponent } from 'src/app/crapome-main/crapome-main.component';
 import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
-import { CrapomeDataInjectionService } from '../injection-services/crapome-injection.service';
+import { CrapomeDataInjectionService } from './injection-services/crapome-injection.service';
+import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
 
 @Component({
     template: `
@@ -44,7 +45,7 @@ import { CrapomeDataInjectionService } from '../injection-services/crapome-injec
             <protein-list-comp [exp_prot]=data></protein-list-comp>
           </div>
           <ng-template #finalCompare>
-            <final-compare></final-compare>
+            <final-compare [data]=data></final-compare>
           </ng-template>
         </ng-template>
       </ng-template>
@@ -63,12 +64,18 @@ export class CrapomeListDisplay implements OnInit {
     constructor(
       private http: IngestionExternalHttpService,
       private router: Router,
+      private cache: CacheRouteReuseStrategy,
+      private route: ActivatedRoute
       ){
       }
       
     ngOnInit(){
+      if(!this.data){
+        this.data = this.cache.retrieve()
+      }
       this.params = _.get(this.data.headers, 'crapome_params');
       this.saved = _.get(this.params, 'species');
+
     }
     setSelect(choice: string){
       this.selectedSpec = choice;
@@ -89,8 +96,7 @@ export class CrapomeListDisplay implements OnInit {
             },
             providers: ['crapome']
           }
-          this.http.configure(request);
-          this.router.navigateByUrl('/information');
+          this.http.configure(request, {route: '/ingestion/external'});
         }
     }
 }

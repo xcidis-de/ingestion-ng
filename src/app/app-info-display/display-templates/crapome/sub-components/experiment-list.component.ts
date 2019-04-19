@@ -1,17 +1,19 @@
-import { Component, Input, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CrapomeDataInjectionService } from '../injection-services/crapome-injection.service';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer} from '@angular/platform-browser';
 import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
 
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
+  
   transform(url) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 } 
-
 @Component({
     template: `
         <div class='exp-border'>
@@ -26,7 +28,7 @@ export class SafePipe implements PipeTransform {
                     Expt.: {{list_item.metadata.expt}}
                 </span>
                 <span>
-                    <button (click)="doExperiment()">
+                    <button (click)="showExperiment()">
                         peptides
                     </button>
                 </span>
@@ -44,17 +46,16 @@ export class SafePipe implements PipeTransform {
     styleUrls: ['./experiment-list.component.scss'],
     selector: 'exp-list-comp'
 })
-export class CrapomeExpComponent implements OnInit{
+export class CrapomeExpComponent {
     @Input() list_item: any;
     info: boolean = false;
 
     constructor(
+        private cache: CacheRouteReuseStrategy,
+        private route: ActivatedRoute,
         private http: IngestionExternalHttpService,
-        private injector: CrapomeDataInjectionService
+        private router: Router
     ){
-    }
-
-    ngOnInit(){
     }
 
     getSrc(){
@@ -64,26 +65,14 @@ export class CrapomeExpComponent implements OnInit{
     }
 
     displayIframe(){
-        //updates template
         this.info = true;
     }
 
-    doExperiment(){
-        //pass whole dataset to injector
-        //this.injector.setExperiment()
-        const exp = this.list_item.metadata.expt
-        const final = {
-            ids: [],
-            names: [this.list_item.external_id],
-            headers: {
-                crapome_params: Object.assign(
-                this.list_item.headers.crapome_params, 
-                {exps: [exp]}),
-            },
-            providers: ['crapome']
-        }
-        this.injector.set('refseq', this.list_item.metadata.refSeqID)
-        this.http.configure(final)
+    showExperiment(){
+        const data = Object.assign({}, this.list_item);
+        data.headers.crapome_params.exps = [data.metadata.expt];
+        this.cache.store({query: this.http.query, data});
+        this.router.navigateByUrl(`/information/crapome/${data.metadata.expt}/${data.external_id}`)
     }
 
 }

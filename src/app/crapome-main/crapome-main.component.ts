@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
-import { Router } from '@angular/router';
-import { CrapomeDataInjectionService } from '../app-info-display/display-templates/injection-services/crapome-injection.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CrapomeDataInjectionService } from '../app-info-display/display-templates/crapome/injection-services/crapome-injection.service';
 
 @Component({
   selector: 'app-crapome-main',
@@ -18,19 +18,20 @@ export class CrapomeMainComponent {
     'S. cerevisiae': 'yeast'
   }
   private mapped = CrapomeMainComponent.mapped;
-  private listed: string[];
+  private listed: string[] = Object.keys(this.mapped);
   private input_type: string[] = ['experiment', 'gene'];
+  private upload: boolean = false;
 
   constructor(
     private http: IngestionExternalHttpService,
-    private router: Router,
+    private route: ActivatedRoute,
     private injector: CrapomeDataInjectionService
     ) {
-      this.listed = Object.keys(CrapomeMainComponent.mapped);
+      
   }
 
-  openExplorer(){
-
+  uploadForm(){
+    this.upload = true;
   }
 
   organizeInput(data: string[]): string[]{
@@ -53,8 +54,7 @@ export class CrapomeMainComponent {
     let formatted;
     if(this.type === 'experiment'){
       const exps = <Array<string>>this.organizeInput(<Array<string>>data)
-      this.injector.set('exps', exps)
- 
+      this.injector.set('exps', exps);
       formatted = {
         ids: [],
         names: data,
@@ -79,8 +79,7 @@ export class CrapomeMainComponent {
         providers: ['crapome']
       }
     } 
-    this.http.configure(formatted);
-    this.router.navigateByUrl(`/information`)
+    this.http.configure(formatted, {route: '/ingestion/external'});
   }
 
 }
