@@ -63,16 +63,10 @@ export class CrapomeListDisplay implements OnInit {
 
     constructor(
       private http: IngestionExternalHttpService,
-      private router: Router,
-      private cache: CacheRouteReuseStrategy,
-      private route: ActivatedRoute
       ){
       }
       
     ngOnInit(){
-      if(!this.data){
-        this.data = this.cache.retrieve()
-      }
       this.params = _.get(this.data.headers, 'crapome_params');
       this.saved = _.get(this.params, 'species');
 
