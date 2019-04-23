@@ -42,10 +42,10 @@ import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.se
         </div>
         <ng-template #expBlock>
           <div *ngIf="!params.proteins.length; else finalCompare">
-            <protein-list-comp [exp_prot]=data></protein-list-comp>
+            <protein-list-comp [proteins]="data"></protein-list-comp>
           </div>
           <ng-template #finalCompare>
-            <final-compare [data]=data></final-compare>
+            <final-compare [data]="data"></final-compare>
           </ng-template>
         </ng-template>
       </ng-template>

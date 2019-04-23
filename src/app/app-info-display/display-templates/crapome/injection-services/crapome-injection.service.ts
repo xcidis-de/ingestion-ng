@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
-import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
-import { get } from 'lodash';
+import { isArray } from 'util';
 
 @Injectable({
     providedIn: "root"
@@ -15,7 +14,6 @@ export class CrapomeDataInjectionService {
 
     constructor(
         private cache: CacheRouteReuseStrategy,
-        private http: IngestionExternalHttpService
     ){
 
     }
@@ -24,8 +22,13 @@ export class CrapomeDataInjectionService {
     }
 
     get(name: string){
-        const item = this.save[name];
-        delete this.save[name];
+        let item = this.save[name];
+        if(!item){
+            item = this.cache.retrieve()
+            if(isArray(item)){
+                return item[0]
+            }
+        }
         return item;
     }
 

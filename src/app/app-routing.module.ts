@@ -4,20 +4,26 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AppQueryFormComponent } from './app-query-form/app-query-form.component';
 import { AppInfoDisplayComponent } from './app-info-display/app-info-display.component';
 import { CrapomeMainComponent } from './crapome-main/crapome-main.component';
-import { CrapomeExpProtein } from './app-info-display/display-templates/crapome/sub-components/crapome-exp-prot.component';
-
+import { LoggedInGuard } from '../services/logged-in/logged.service';
+import { UserLoginComponent } from './user-login-component/user-login-component.component';
 
 const routes: Routes = [
-  {path: 'query', component: AppQueryFormComponent},
-  {path: 'information/:provider/:id', component: AppInfoDisplayComponent},
-  {path: 'information/crapome/:exp/:gene', component: CrapomeExpProtein},
-  {
-    path: 'information/:hash', 
-    component: AppInfoDisplayComponent, 
-    runGuardsAndResolvers: `always`
-  },
-  { path: 'crapome', component: CrapomeMainComponent },
-  { path: '**', redirectTo: '/query', pathMatch: 'full' },
+  { path: 'query', 
+    component: AppQueryFormComponent,
+    canActivate: [LoggedInGuard] },
+  { path: 'information/:provider',
+    component: AppInfoDisplayComponent,
+    canActivate: [LoggedInGuard],
+    children: [
+      { path: ':id', component: AppInfoDisplayComponent },
+      { path: ':exp/:gene', component: AppInfoDisplayComponent },
+    ]},
+  { path: 'information/:hash', component: AppInfoDisplayComponent },
+  { path: 'crapome', 
+    component: CrapomeMainComponent,
+    canActivate: [LoggedInGuard] },
+  // { path: '**', redirectTo: '/login', pathMatch: 'full' },
+  // { path: 'login', component: UserLoginComponent }
 ];
 
 @NgModule({

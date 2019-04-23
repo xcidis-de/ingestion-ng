@@ -4,7 +4,7 @@ import { InfoDisplayInterface } from './display-templates/pubchem/data-display.i
 import { BasicTextObjectDisplay } from './display-templates/pubchem/text-object.component';
 import { DescriptionListDisplay } from './display-templates/pubchem/description-list.component';
 import { CrapomeListDisplay } from './display-templates/crapome/crapome-list.component';
-import { Router, ActivatedRoute, DetachedRouteHandle } from '@angular/router';
+import { Router, ActivatedRoute, DetachedRouteHandle, Params } from '@angular/router';
 import { CrapomeExpProtein} from './display-templates/crapome/sub-components/crapome-exp-prot.component';
 import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
 import { from } from 'rxjs'
@@ -16,6 +16,7 @@ import { from } from 'rxjs'
 export class AppInfoDisplayComponent implements OnInit {
   @ViewChild("infoDisplay", {read: ViewContainerRef}) infoTemplate: ViewContainerRef;
   check: boolean = false;
+  params: Params;
   
 
   constructor(
@@ -26,10 +27,11 @@ export class AppInfoDisplayComponent implements OnInit {
   ){}
 
   displayItems(data){
-    console.log(data);
     let newComponent;
     let viewReference: ViewContainerRef = this.infoTemplate;
+    
     if(viewReference){
+      // console.log(data, 'info-display')
       viewReference.clear();
       if(isArray(data)){
         for(const item of data){
@@ -57,16 +59,23 @@ export class AppInfoDisplayComponent implements OnInit {
     if(!this.cache.checkHistory()){
       alert("No active queries");
       this.router.navigateByUrl('/query');
-    }
-    
+    };
+
+    this.route.params.subscribe(params => {
+      if(this.params !== params){
+        this.params = params;
+        this.ngOnInit()
+      }
+    });
+
     this.cache
         .cacheExists()
         .subscribe((check)=>{
           if(check){
             this.check = check;
+            const data = this.cache.retrieve();
             setTimeout(()=>{
-              this.displayItems(
-                this.cache.retrieve())
+              this.displayItems(data);
             }, 100)
           }
         })

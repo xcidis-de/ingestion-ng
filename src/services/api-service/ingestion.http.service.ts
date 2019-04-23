@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, first } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
-import * as config from './config';
+import { throwError } from 'rxjs';
+import { http as endpoints } from '../../environments/environment';
 import { IngestionPostInterface, InternalPostInterface } from './service.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { isEqual } from 'lodash';
@@ -11,8 +11,7 @@ import { CacheRouteReuseStrategy } from '../routeCache/cache-router.service';
 
 @Injectable()
 export class IngestionExternalHttpService {
-    filter: string = '/dbfilters';
-    host: string = config.url.host || 'http://localhost:3000';
+    host: string = endpoints.host;
     requested: boolean = false;
     active: false;
     query: IngestionPostInterface

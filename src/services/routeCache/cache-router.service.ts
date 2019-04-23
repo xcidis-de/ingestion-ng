@@ -2,36 +2,18 @@ import { ActivatedRoute, ActivatedRouteSnapshot, DetachedRouteHandle, Router } f
 import { IngestionPostInterface } from '../api-service/service.interface';
 import { RouteHistoryService } from './route-history.service';
 import { Injectable } from '@angular/core';
-import { of, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class CacheRouteReuseStrategy {
   storedRouteHandles = new Map<HashAlgorithmIdentifier, {query: IngestionPostInterface, data: any}>();
+  behaviorSubject = new Subject()
   allowRetriveCache = {};
-  
+
   constructor(
     private history: RouteHistoryService,
     private router: Router,
-    private route: ActivatedRoute
   ){}
-
-  shouldReuseRoute(route: ActivatedRouteSnapshot): boolean {
-    // const path = this.getPath(route);
-    // const cache = this.storedRouteHandles.get(path);
-    // console.log('shouldReuse')
-
-    // if(this.cacheExists(route) && cache.query){
-    //   //if it's in the history of queries
-    //     for(const item of this.history.list){
-    //       if(item === cache.query){
-    //         return true;
-    //       }
-    //   }
-    // }
-    // return false
-    //needs revision
-    return true;
-  }
 
   retrieve(): any | null {
     const path = this.getPath();
@@ -53,8 +35,10 @@ export class CacheRouteReuseStrategy {
     })
   }
 
-  store(detachedTree: {query: IngestionPostInterface, data: any}): void {
-    const path = this.getPath();
+  store(detachedTree: {query: IngestionPostInterface, data: any}, path?: string): void {
+    if(!path){
+      path = this.getPath();
+    }
     this.storedRouteHandles.set(path, detachedTree);
     this.allowRetriveCache[path] = true;
   }
@@ -62,6 +46,7 @@ export class CacheRouteReuseStrategy {
   getPath(): string {
     return this.router.routerState.snapshot.url
   }
+  
 
   checkHistory(){
     if(this.history.list.length){
@@ -70,4 +55,5 @@ export class CacheRouteReuseStrategy {
       return false;
     }
   }
+
 }

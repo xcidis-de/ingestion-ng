@@ -52,10 +52,10 @@ export class CrapomeExpComponent {
 
     constructor(
         private cache: CacheRouteReuseStrategy,
-        private route: ActivatedRoute,
         private http: IngestionExternalHttpService,
-        private router: Router
+        private router: Router,
     ){
+       
     }
 
     getSrc(){
@@ -69,10 +69,14 @@ export class CrapomeExpComponent {
     }
 
     showExperiment(){
-        const data = Object.assign({}, this.list_item);
+        const data = JSON.parse(JSON.stringify(this.list_item))
+        const path = `/information/crapome/${data.metadata.expt}/${data.external_id}`
         data.headers.crapome_params.exps = [data.metadata.expt];
-        this.cache.store({query: this.http.query, data});
-        this.router.navigateByUrl(`/information/crapome/${data.metadata.expt}/${data.external_id}`)
+
+        const copy = JSON.parse(JSON.stringify(this.http.query))
+        this.http.query = copy
+        this.cache.store({query: copy, data}, path);
+        this.router.navigateByUrl(path)
     }
 
 }

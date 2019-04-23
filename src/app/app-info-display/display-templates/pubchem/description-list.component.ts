@@ -32,8 +32,6 @@ export class DescriptionListDisplay implements OnInit {
 
   constructor(
       private http: IngestionExternalHttpService,
-      private route: ActivatedRoute,
-      private cache: CacheRouteReuseStrategy
   ){
 
   }

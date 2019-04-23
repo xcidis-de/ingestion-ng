@@ -1,16 +1,14 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { CrapomeDataInjectionService } from '../injection-services/crapome-injection.service';
 import { map } from 'lodash';
-import { ActivatedRoute } from '@angular/router';
 import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
 
 @Component({
     template:`
     <div>
         <ul>
-            <li>Gene Symbol: {{data.external_id}}</li>
-            <li>RefSeq|GI: {{data.refseq}}</li>
-            <li>Exp: {{data.headers.crapome_params.exps[0]}}</li>
+            <li>Gene Symbol: {{gene}}</li>
+            <li>RefSeq|GI: {{refseq}}</li>
+            <li>Exp: {{exp}}</li>
         </ul>
         <table>
         <thead>
@@ -36,6 +34,11 @@ import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.se
 })
 export class CrapomeExpProtein implements OnInit{
     @Input() data: any;
+    date: string;
+    gene: string;
+    refseq: string;
+    exp: string;
+
     table: {
         charge: string, 
         initial_probability: string, 
@@ -44,19 +47,34 @@ export class CrapomeExpProtein implements OnInit{
     }[];
 
     constructor(
-       private injector: CrapomeDataInjectionService){
+        private cache: CacheRouteReuseStrategy,
+       ){
 
     }
     ngOnInit(){
-        this.data.refseq = this.injector.get('peptides').metadata.RefSeq;
-        this.table = map(this.data.metadata, (el, peptide)=>{
-            return {
-                peptide,
-                charge: el.charge,
-                psm: el.PSM,
-                init_prob: el.initial_probability
-            }
-        });
+        if(!this.data){
+            this.data = this.cache.retrieve();
+        }
+        this.date = this.data.metadata["Modify Date"];
+        this.refseq = this.data.metadata["refSeqID"];
+        this.gene = this.data.metadata.geneSymbols;
+        this.exp = this.data.metadata.expt;
+
+        delete this.data.metadata["Modify Date"];
+        delete this.data.metadata["refSeqID"];
+        delete this.data.metadata.geneSymbols;
+        delete this.data.metadata.expt;
+
+        setTimeout(()=>{
+            this.table = map(this.data.metadata, (el, peptide)=>{
+                return {
+                    peptide,
+                    charge: el.charge,
+                    psm: el.PSM,
+                    init_prob: el.initial_probability
+                }
+            });
+        }, 1);
         
     }
 }

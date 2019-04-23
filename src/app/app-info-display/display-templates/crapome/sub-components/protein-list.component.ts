@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CrapomeDataInjectionService } from '../injection-services/crapome-injection.service';
 import { isNumber, isNaN, get, isObject } from 'lodash';
+import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
 
 @Component({
     template: `
@@ -39,17 +40,19 @@ import { isNumber, isNaN, get, isObject } from 'lodash';
     selector: 'protein-list-comp'
 })
 export class CrapomeProteinList implements OnInit {
-    @Input() exp_prot;
+    @Input() proteins;
     exps: string[];
     table: any[];
     index: number = 0;
     constructor(
-        private crapoService: CrapomeDataInjectionService
+        private crapoService: CrapomeDataInjectionService,
     ){
     }
     ngOnInit(){
-        this.exps = this.crapoService.get('exps');
-        this.exps = this.exps.map((el)=>{
+        const exps = this.crapoService.get('exps');
+        const proteins = this.crapoService.get('proteins');
+        this.proteins = proteins
+        this.exps = exps.map((el)=>{
             if(!isNaN(parseInt(el)) && isNumber(parseInt(el))){
                 return 'CC' + `${el}`;
             }else{
@@ -57,7 +60,7 @@ export class CrapomeProteinList implements OnInit {
             }
         })
         this.exps = this.exps.sort(this.sortExperiments);
-        this.crapoService.insertTable(this.exp_prot.metadata);
+        this.crapoService.insertTable(this.proteins.metadata);
         this.table = this.crapoService.viewTable(0);
     }
 

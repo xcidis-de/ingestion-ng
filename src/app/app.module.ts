@@ -24,6 +24,9 @@ import { IngestionExternalHttpService } from 'src/services/api-service/ingestion
 import { CrapomeDataInjectionService } from './app-info-display/display-templates/crapome/injection-services/crapome-injection.service';
 import { CacheRouteReuseStrategy } from '../services/routeCache/cache-router.service';
 import { RouteHistoryService } from '../services/routeCache/route-history.service';
+import { UserLoginComponent } from './user-login-component/user-login-component.component';
+import { UserAuthService } from 'src/services/logged-in/user.service';
+import { LoggedInGuard } from 'src/services/logged-in/logged.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { RouteHistoryService } from '../services/routeCache/route-history.servic
     CrapomeProteinList,
     SafePipe,
     SpinnerComponent,
-    CrapomeUploadComponent
+    CrapomeUploadComponent,
+    UserLoginComponent
   ],
   imports: [
     FormsModule,
@@ -55,7 +59,10 @@ import { RouteHistoryService } from '../services/routeCache/route-history.servic
     IngestionExternalHttpService, 
     CrapomeDataInjectionService,
     RouteHistoryService,
-    CacheRouteReuseStrategy
+    CacheRouteReuseStrategy,
+    UserAuthService,
+    LoggedInGuard
+    
   ],
   bootstrap: [AppComponent]
 })

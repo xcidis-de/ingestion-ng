@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
 import { AppInfoDisplayComponent } from '../app-info-display/app-info-display.component';
 import { Router } from '@angular/router';
+import { query_form_controls as formText } from '../../environments/environment';
 
 interface Name extends Element {
   name: string
@@ -16,17 +17,16 @@ type HTMLElementEvent<T extends Name> = Event & {
 })
 
 export class AppQueryFormComponent implements OnInit {
-  filters: string[] = [];
-  ids: string = '';
-  names: string = '';
-  adv: boolean = false;
-  classifications: string[] = ['Protein', 'Gene', 'Chemistry'];
-  databases: string[] = ['PubChem', 'CRAPome'];
+  classifications: string[] = formText.classifications;
+  databases: string[] = formText.databases;
   selected_databases: Object = {};
   selected_classes: Object = {};
   usePseudonym: boolean = false;
   recursive: boolean = false;
   exact: boolean = false;
+  adv: boolean = false;
+  names: string = '';
+  ids: string = '';
 
   constructor(private http: IngestionExternalHttpService, private router: Router) {
   }

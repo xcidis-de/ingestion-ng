@@ -45,6 +45,7 @@ export class CrapomeMainComponent {
     })    
     return cc_added;
   }
+  
   readForm(){
     const input_one = ';'
     const delimiters = new RegExp(`${input_one}`)
