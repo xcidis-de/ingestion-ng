@@ -1,0 +1,10 @@
+<div>
+  <div class='panel' 
+    [@slideInOut]
+    *ngIf="hovered; else tabComp"
+    (mouseleave)="onEvent($event)">
+    <button (click)="saveWith">Upload with</button>
+    -OR-
+    <button (click)="save">Save</button>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import { catchError, first } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { http as endpoints } from '../../environments/environment';
 import { IngestionPostInterface, InternalPostInterface } from './service.interface';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { isEqual } from 'lodash';
 import { RouteHistoryService } from '../routeCache/route-history.service';
 import { CacheRouteReuseStrategy } from '../routeCache/cache-router.service';
@@ -20,8 +20,7 @@ export class IngestionExternalHttpService {
         private http: HttpClient,
         private history: RouteHistoryService,
         private cache: CacheRouteReuseStrategy,
-        private router: Router,
-        private route: ActivatedRoute
+        private router: Router
     ){
 
     }

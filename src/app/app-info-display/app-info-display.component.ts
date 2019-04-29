@@ -1,13 +1,14 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { isArray } from 'lodash';
 import { InfoDisplayInterface } from './display-templates/pubchem/data-display.interface'
 import { BasicTextObjectDisplay } from './display-templates/pubchem/text-object.component';
 import { DescriptionListDisplay } from './display-templates/pubchem/description-list.component';
 import { CrapomeListDisplay } from './display-templates/crapome/crapome-list.component';
-import { Router, ActivatedRoute, DetachedRouteHandle, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { CrapomeExpProtein} from './display-templates/crapome/sub-components/crapome-exp-prot.component';
 import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
-import { from } from 'rxjs'
+
+
 @Component({
   selector: 'app-app-info-display',
   templateUrl: './app-info-display.component.html',
@@ -31,7 +32,6 @@ export class AppInfoDisplayComponent implements OnInit {
     let viewReference: ViewContainerRef = this.infoTemplate;
     
     if(viewReference){
-      // console.log(data, 'info-display')
       viewReference.clear();
       if(isArray(data)){
         for(const item of data){
@@ -44,6 +44,7 @@ export class AppInfoDisplayComponent implements OnInit {
           (<InfoDisplayInterface>component.instance).data = item
         }
       }else{
+        this.router.navigate([{outlets:{'side-panel': 'open'}}])
         if(data.provider === 'pubchem'){
           newComponent = this.componentFactoryResolver.resolveComponentFactory(BasicTextObjectDisplay);
         }else if(data.provider === 'crapome'){
@@ -56,6 +57,7 @@ export class AppInfoDisplayComponent implements OnInit {
   }
     
   ngOnInit() {
+    
     if(!this.cache.checkHistory()){
       alert("No active queries");
       this.router.navigateByUrl('/query');
@@ -67,7 +69,7 @@ export class AppInfoDisplayComponent implements OnInit {
         this.ngOnInit()
       }
     });
-
+    
     this.cache
         .cacheExists()
         .subscribe((check)=>{
@@ -75,9 +77,13 @@ export class AppInfoDisplayComponent implements OnInit {
             this.check = check;
             const data = this.cache.retrieve();
             setTimeout(()=>{
+              if(!data || data.length < 1){
+                alert('Bad query');
+                this.router.navigateByUrl('/query');
+              }
               this.displayItems(data);
             }, 100)
           }
         })
-  }     
+  }
 }

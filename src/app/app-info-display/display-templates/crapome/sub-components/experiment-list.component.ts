@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CrapomeDataInjectionService } from '../injection-services/crapome-injection.service';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer} from '@angular/platform-browser';
-import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
+import { IngestionExternalHttpService } from 'src/services/api-service/external.http.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
 

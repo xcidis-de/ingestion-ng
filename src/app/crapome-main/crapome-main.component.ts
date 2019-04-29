@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
+import { Component, OnInit } from '@angular/core';
+import { IngestionExternalHttpService } from 'src/services/api-service/external.http.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CrapomeDataInjectionService } from '../app-info-display/display-templates/crapome/injection-services/crapome-injection.service';
 
@@ -8,7 +8,7 @@ import { CrapomeDataInjectionService } from '../app-info-display/display-templat
   templateUrl: './crapome-main.component.html',
   styleUrls: ['./crapome-main.component.scss']
 })
-export class CrapomeMainComponent {
+export class CrapomeMainComponent implements OnInit{
   private file: string;
   private spec: string = 'human';
   private type: string = 'experiment';
@@ -24,10 +24,14 @@ export class CrapomeMainComponent {
 
   constructor(
     private http: IngestionExternalHttpService,
-    private route: ActivatedRoute,
+    private router: Router,
     private injector: CrapomeDataInjectionService
     ) {
       
+  }
+
+  ngOnInit(){
+    this.router.navigate([{outlets: {'side-panel': null}}])
   }
 
   uploadForm(){

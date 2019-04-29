@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
-import { IngestionExternalHttpService } from '../../../../services/api-service/ingestion.http.service';
+import { IngestionExternalHttpService } from '../../../../services/api-service/external.http.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import {SpinnerComponent } from '../../../spinner/spinner.component';
 import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';

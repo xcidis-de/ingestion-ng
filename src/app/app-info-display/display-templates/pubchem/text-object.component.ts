@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   template: `
@@ -8,10 +8,14 @@ import { Component, Input, OnInit } from '@angular/core';
     </div>
   `
 })
-export class BasicTextObjectDisplay implements OnInit{
+export class BasicTextObjectDisplay implements OnInit {
   @Input() data: any;
+
+  constructor(){
+  }
 
   ngOnInit(){
     this.data = Object.values(this.data.metadata);
   }
+
 }

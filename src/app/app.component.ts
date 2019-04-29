@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserAuthService } from 'src/services/logged-in/user.service';
 import { CacheRouteReuseStrategy } from 'src/services/routeCache/cache-router.service';
-import { IngestionPostInterface } from '../services/api-service/service.interface'
+import { IngestionPostInterface } from '../services/api-service/service.interface';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

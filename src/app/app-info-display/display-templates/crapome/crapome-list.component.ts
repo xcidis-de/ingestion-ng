@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CrapomeMainComponent } from 'src/app/crapome-main/crapome-main.component';
-import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
+import { IngestionExternalHttpService } from 'src/services/api-service/external.http.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { CrapomeDataInjectionService } from './injection-services/crapome-injection.service';

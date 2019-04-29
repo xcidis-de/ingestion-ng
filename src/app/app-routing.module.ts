@@ -6,6 +6,8 @@ import { AppInfoDisplayComponent } from './app-info-display/app-info-display.com
 import { CrapomeMainComponent } from './crapome-main/crapome-main.component';
 import { LoggedInGuard } from '../services/logged-in/logged.service';
 import { UserLoginComponent } from './user-login-component/user-login-component.component';
+import { SidePanelComponent } from './side-panel/side-panel.component';
+import { SidePanelTabComponent } from './side-panel/side-panel-tab/side-panel-tab.component';
 
 const routes: Routes = [
   { path: 'query', 
@@ -21,9 +23,12 @@ const routes: Routes = [
   { path: 'information/:hash', component: AppInfoDisplayComponent },
   { path: 'crapome', 
     component: CrapomeMainComponent,
-    canActivate: [LoggedInGuard] },
-  // { path: '**', redirectTo: '/login', pathMatch: 'full' },
-  // { path: 'login', component: UserLoginComponent }
+    canActivate: [LoggedInGuard] 
+  },
+  { path: '**', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: UserLoginComponent },
+  { path: 'open', component: SidePanelComponent, outlet: 'side-panel' },
+  { path: 'closed', component: SidePanelTabComponent, outlet: 'side-panel' }
 ];
 
 @NgModule({

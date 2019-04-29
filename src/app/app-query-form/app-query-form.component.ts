@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IngestionExternalHttpService } from 'src/services/api-service/ingestion.http.service';
+import { IngestionExternalHttpService } from 'src/services/api-service/external.http.service';
 import { AppInfoDisplayComponent } from '../app-info-display/app-info-display.component';
 import { Router } from '@angular/router';
 import { query_form_controls as formText } from '../../environments/environment';
@@ -28,14 +28,17 @@ export class AppQueryFormComponent implements OnInit {
   names: string = '';
   ids: string = '';
 
-  constructor(private http: IngestionExternalHttpService, private router: Router) {
-  }
+  constructor(
+    private http: IngestionExternalHttpService,
+    private router: Router 
+  ) {}
 
   showAdv(){
     this.adv = this.adv === true ? false : true;
   }
   
-  ngOnInit() {  
+  ngOnInit() {
+    this.router.navigate([{outlets: {'side-panel': null}}])  
   }
 
 
@@ -58,7 +61,6 @@ export class AppQueryFormComponent implements OnInit {
   }
 
   formEmitter(){
-    
     const ids: string[] = this.ids.replace(/,|\s/g, ';').split(';');
     const names: string[] = this.names.split(';');
     const submit = {
